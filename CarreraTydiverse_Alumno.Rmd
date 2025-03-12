@@ -308,13 +308,13 @@ top_counts
 23. Repite el apartado anterior utilizando **pipes** para que finalmente el resultado se ordene, en orden descendente, según el número de descargas (`count`) y se almacene el la variable `top_counts_sorted`
 ```{r}
 
+top_counts_sorted <- cran %>%
+  group_by(package) %>%  
+  summarise(count = n()) %>%  
+  filter(count > quantile(count, probs = 0.99)) %>%  
+  arrange(desc(count))  
 
-
-
-
-
-
-
+top_counts_sorted
 
 ```
 
@@ -323,7 +323,12 @@ top_counts
 ```{r}
 
 
-
+top_unique_sorted <- cran %>%
+  group_by(package) %>%  
+  summarise(unique = n_distinct(ip_id)) %>% 
+  filter(unique > quantile(unique, probs = 0.99)) %>%  
+  arrange(desc(unique))  
+top_unique_sorted
 
 
 
@@ -334,6 +339,9 @@ top_counts
 
 ```{r}
 
+cran %>%
+  select(ip_id, country, package, size) %>%
+  print(n = 10)  
 
 
 ```
